@@ -1,0 +1,18 @@
+{
+    "name": "gollum23/clase_1",
+    "description": "Clase 1 Curso PHP y Laravel 5.1 Platzi",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Diego Forero",
+            "email": "gollum23@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "PlatziPHP\\": "src/"
+        }
+    }
+}
