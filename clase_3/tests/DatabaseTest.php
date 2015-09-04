@@ -7,7 +7,16 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
         $result = $db->posts();
 
-        $this->assertCount(4, $result);
+        $this->assertInstanceOf(
+            \Illuminate\Support\Collection::class,
+            $result
+        );
 
+        foreach ($result as $post) {
+            $this->assertInstanceOf(
+                \PlatziPHP\Domain\Post::class,
+                $post
+            );
+        }
     }
 }
