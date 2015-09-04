@@ -9,13 +9,9 @@ class PostRepository
 {
 
 
-    public function posts()
+    public function all()
     {
-        $pdo = new \PDO(
-            'mysql:host=127.0.0.1;dbname=php_laravel',
-            'gollum23',
-            'B@QQME1K'
-        );
+        $pdo = $this->getPDO();
 
         $statement = $pdo->prepare(
             'SELECT * FROM posts'
@@ -24,6 +20,33 @@ class PostRepository
         $statement->execute();
 
         return $this->mapToPost($statement->fetchAll());
+    }
+
+    public function find($id)
+    {
+        $pdo = $this->getPDO();
+
+        $statement = $pdo->prepare(
+            'SELECT * FROM post WHERE id = :id'
+        );
+
+        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
+
+        $statement->execute();
+    }
+
+    /**
+     * @return \PDO
+     */
+    private function getPDO()
+    {
+        $pdo = new \PDO(
+            'mysql:host=127.0.0.1;dbname=php_laravel',
+            'gollum23',
+            'B@QQME1K'
+        );
+
+        return $pdo;
     }
 
     private function mapToPost(array $results)

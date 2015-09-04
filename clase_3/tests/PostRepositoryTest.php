@@ -1,11 +1,14 @@
 <?php
+use PlatziPHP\Domain\Post;
+use PlatziPHP\Infrastructure\PostRepository;
+
 class PostRepositoryTest extends PHPUnit_Framework_TestCase
 {
-    function test_connection_doesnt_explode()
+    function test_all_posts()
     {
-        $db = new \PlatziPHP\Infrastructure\PostRepository();
+        $posts = new PostRepository();
 
-        $result = $db->posts();
+        $result = $posts->all();
 
         $this->assertInstanceOf(
             \Illuminate\Support\Collection::class,
@@ -14,9 +17,21 @@ class PostRepositoryTest extends PHPUnit_Framework_TestCase
 
         foreach ($result as $post) {
             $this->assertInstanceOf(
-                \PlatziPHP\Domain\Post::class,
+                Post::class,
                 $post
             );
         }
+    }
+
+    function test_find_a_post_by_id()
+    {
+        $posts = new PostRepository();
+
+        $post = $posts->find(1);
+
+        $this->assertInstanceOf(
+            Post::class,
+            $post
+        );
     }
 }
