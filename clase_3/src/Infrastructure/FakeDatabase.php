@@ -19,7 +19,6 @@ class FakeDatabase
         );
         $author->setName('Diego', 'Forero');
 
-
         return new Collection([
             1 => new Post($author, 'Post #1', 'This is the first post'),
             2 => new Post($author, 'Post #2', 'This is the second post'),
