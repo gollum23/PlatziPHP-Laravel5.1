@@ -1,9 +1,9 @@
 <?php
-class DatabaseTest extends PHPUnit_Framework_TestCase
+class PostRepositoryTest extends PHPUnit_Framework_TestCase
 {
     function test_connection_doesnt_explode()
     {
-        $db = new \PlatziPHP\Infrastructure\Database();
+        $db = new \PlatziPHP\Infrastructure\PostRepository();
 
         $result = $db->posts();
 

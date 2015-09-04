@@ -5,7 +5,7 @@ namespace PlatziPHP\Infrastructure;
 use Illuminate\Support\Collection;
 use PlatziPHP\Domain\Post;
 
-class Database
+class PostRepository
 {
 
 
