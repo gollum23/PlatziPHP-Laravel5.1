@@ -13,5 +13,13 @@ class Database
             'gollum23',
             'B@QQME1K'
         );
+
+        $statement = $pdo->prepare(
+            'SELECT * FROM posts'
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
 }

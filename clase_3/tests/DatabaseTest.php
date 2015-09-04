@@ -5,6 +5,9 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     {
         $db = new \PlatziPHP\Infrastructure\Database();
 
-        $db->posts();
+        $result = $db->posts();
+
+        $this->assertCount(4, $result);
+
     }
 }
