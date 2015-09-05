@@ -1,6 +1,8 @@
 <?php
 namespace PlatziPHP\Domain;
 
+use PlatziPHP\Infrastructure\AuthorRepository;
+
 class Post
 {
     private $id;
@@ -13,7 +15,7 @@ class Post
 
     public function __construct($authorId, $title, $body, $id=null)
     {
-        $this->author = $authorId;
+        $this->setAuthor($authorId);
         $this->title = $title;
         $this->body = $body;
         $this->id = $id;
@@ -39,4 +41,18 @@ class Post
     {
         return 'by ' . $this->author->getFirstName() . ' ' . $this->author->getLastName();
     }
+
+    private function setAuthor($author)
+    {
+        if ($author instanceof Author){
+            $this->author = $author;
+        }
+        else
+        {
+            $repository = new AuthorRepository();
+            $this->author = $repository->find($author);
+        }
+    }
+
+
 }

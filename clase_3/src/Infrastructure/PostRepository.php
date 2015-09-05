@@ -6,9 +6,12 @@ use Illuminate\Support\Collection;
 use PlatziPHP\Domain\EntityNotFound;
 use PlatziPHP\Domain\Post;
 
-class PostRepository
+class PostRepository extends BaseRepository
 {
-
+    protected function table()
+    {
+        return 'posts';
+    }
 
     public function all()
     {
@@ -21,30 +24,6 @@ class PostRepository
         $statement->execute();
 
         return $this->mapToPost($statement->fetchAll());
-    }
-
-    public function find($id)
-    {
-        $pdo = $this->getPDO();
-
-        $statement = $pdo->prepare(
-            'SELECT * FROM posts WHERE id = :id'
-        );
-
-        $statement->bindParam(':id', $id, \PDO::PARAM_INT);
-
-        $statement->execute();
-
-        $result = $statement->fetch();
-
-        if ($result === false)
-        {
-            throw new EntityNotFound($id, "Post $id does not exist");
-        }
-
-        return $this->mapPost(
-            $result
-        );
     }
 
     public function search($query)
@@ -64,19 +43,7 @@ class PostRepository
         return $this->mapToPost($statement->fetchAll());
     }
 
-    /**
-     * @return \PDO
-     */
-    private function getPDO()
-    {
-        $pdo = new \PDO(
-            'mysql:host=127.0.0.1;dbname=php_laravel',
-            'gollum23',
-            'B@QQME1K'
-        );
 
-        return $pdo;
-    }
 
     private function mapToPost(array $results)
     {
@@ -84,14 +51,14 @@ class PostRepository
 
         foreach ($results as $result)
         {
-            $post = $this->mapPost($result);
+            $post = $this->mapEntity($result);
             $posts->push($post);
         }
 
         return $posts;
     }
 
-    private function mapPost(array $result)
+    protected function mapEntity(array $result)
     {
         return new Post(
             $result['author_id'],
