@@ -3,6 +3,7 @@ namespace PlatziPHP\Infrastructure;
 
 
 use Illuminate\Support\Collection;
+use PlatziPHP\Domain\EntityNotFound;
 use PlatziPHP\Domain\Post;
 
 class PostRepository
@@ -27,12 +28,40 @@ class PostRepository
         $pdo = $this->getPDO();
 
         $statement = $pdo->prepare(
-            'SELECT * FROM post WHERE id = :id'
+            'SELECT * FROM posts WHERE id = :id'
         );
 
         $statement->bindParam(':id', $id, \PDO::PARAM_INT);
 
         $statement->execute();
+
+        $result = $statement->fetch();
+
+        if ($result === false)
+        {
+            throw new EntityNotFound($id, "Post $id does not exist");
+        }
+
+        return $this->mapPost(
+            $result
+        );
+    }
+
+    public function search($query)
+    {
+        $pdo = $this->getPDO();
+
+        $statement = $pdo->prepare(
+            'SELECT * FROM posts WHERE title LIKE :query OR body LIKE :query'
+        );
+
+        $query = "%$query";
+
+        $statement->bindParam(':query', $query, \PDO::PARAM_STR);
+
+        $statement->execute();
+
+        return $this->mapToPost($statement->fetchAll());
     }
 
     /**
@@ -55,16 +84,20 @@ class PostRepository
 
         foreach ($results as $result)
         {
-            $post = new Post(
-                $result['author_id'],
-                $result['title'],
-                $result['body'],
-                $result['id']
-            );
-
+            $post = $this->mapPost($result);
             $posts->push($post);
         }
 
         return $posts;
+    }
+
+    private function mapPost(array $result)
+    {
+        return new Post(
+            $result['author_id'],
+            $result['title'],
+            $result['body'],
+            $result['id']
+        );
     }
 }
