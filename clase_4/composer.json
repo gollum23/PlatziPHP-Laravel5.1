@@ -1,0 +1,11 @@
+{
+    "name": "gollum23/laravel",
+    "description": "Proyecto laravel curso platzi 2015",
+    "authors": [
+        {
+            "name": "Diego Forero",
+            "email": "gollum23@gmail.com"
+        }
+    ],
+    "require": {}
+}
