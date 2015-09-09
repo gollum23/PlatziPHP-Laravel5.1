@@ -1,6 +1,8 @@
 {
     "name": "gollum23/laravel",
     "description": "Proyecto laravel curso platzi 2015",
+    "type": "project",
+    "license": "MIT",
     "authors": [
         {
             "name": "Diego Forero",
